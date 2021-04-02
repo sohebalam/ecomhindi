@@ -1,7 +1,7 @@
 import Head from "next/head"
 import Link from "next/link"
 import Image from "next/image"
-
+import baseURL from '../helpers/baseUrl'
 const Home = ({ products }) => {
   return (
     <>
@@ -37,7 +37,7 @@ const Home = ({ products }) => {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch(`http://localhost:3000/api/products`)
+  const res = await fetch(`${baseURL}/api/products`)
 
   const data = await res.json()
 
