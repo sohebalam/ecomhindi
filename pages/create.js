@@ -1,14 +1,34 @@
 import Link from "next/link"
 import { useState } from "react"
+import baseURL from "../helpers/baseUrl"
+import FileBase from "react-file-base64"
+
 const Create = () => {
   const [title, setTitle] = useState("")
   const [price, setPrice] = useState("")
   const [selectedFile, setSelectedFile] = useState("")
   const [description, setDescription] = useState("")
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(title, price, description, selectedFile)
+    const res = await fetch(`${baseURL}/api/products`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        price,
+        selectedFile,
+        description,
+      }),
+    })
+    const res2 = await res.json()
+    if (res2.error) {
+      M.toast({ html: res2.error, classes: "red" })
+    } else {
+      M.toast({ html: "Product saved", classes: "green" })
+    }
   }
 
   return (
@@ -36,19 +56,19 @@ const Create = () => {
         <div className="btn">
           <span>File</span>
         </div>
-        <input
+        <FileBase
           type="file"
-          accept="image/*"
-          onChange={(e) => setSelectedFile(e.target.files[0])}
+          multiple={false}
+          onDone={({ base64 }) => setSelectedFile({ selectedFile: base64 })}
         />
 
         <div className="file-path-wrapper">
           <input className="file-path validate" type="text" />
         </div>
-        <img
+        {/* <img
           className="responsive-img"
           src={selectedFile ? URL.createObjectURL(selectedFile) : ""}
-        />
+        /> */}
       </div>
 
       <textarea

@@ -1,7 +1,7 @@
 import Head from "next/head"
 import Link from "next/link"
 import Image from "next/image"
-import baseURL from '../helpers/baseUrl'
+import baseURL from "../helpers/baseUrl"
 const Home = ({ products }) => {
   return (
     <>

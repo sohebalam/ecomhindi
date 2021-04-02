@@ -4,7 +4,38 @@ import Product from "../../models/Product"
 connectDB()
 
 export default async (req, res) => {
+  switch (req.method) {
+    case "GET":
+      await getAllProducts(req, res)
+      break
+    case "POST":
+      await createProduct(req, res)
+      break
+  }
+}
+
+const getAllProducts = async (req, res) => {
   const products = await Product.find({})
 
   res.status(200).json(products)
+}
+
+const createProduct = async (req, res) => {
+  const { title, price, description, selectedFile } = req.body
+
+  try {
+    if (!title || !price || !description || !selectedFile) {
+      return res.status(422).json({ error: "Please add all the fields" })
+    }
+    const product = await new Product({
+      title,
+      price,
+      description,
+      selectedFile: selectedFile.selectedFile,
+    }).save()
+    res.status(201).json(product)
+  } catch (err) {
+    res.status(500).json({ error: "internal server error" })
+    console.log(err)
+  }
 }
