@@ -13,7 +13,7 @@ const productSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  selectedFile: String,
+  selectedFile: { type: String, required: true },
   date: {
     type: Date,
   },

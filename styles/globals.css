@@ -39,7 +39,7 @@ input:focus {
 
 .card {
   width: 50%;
-  float: left;
+  float: center;
 }
 .card-content {
   text-align: center;
@@ -55,4 +55,9 @@ input:focus {
   justify-content: center;
   align-items: center;
   display: flex;
+}
+
+.narrowcontainer {
+  margin-left: 5rem;
+  margin-right: 5rem;
 }

@@ -1,5 +1,5 @@
 import connectDB from "../../helpers/connectDB"
-import Product from "../../models/Product"
+import Product from "../../models/productModel"
 
 connectDB()
 
@@ -15,9 +15,13 @@ export default async (req, res) => {
 }
 
 const getAllProducts = async (req, res) => {
-  const products = await Product.find({})
+  try {
+    const products = await Product.find({})
 
-  res.status(200).json(products)
+    res.status(200).json(products)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const createProduct = async (req, res) => {
@@ -31,7 +35,7 @@ const createProduct = async (req, res) => {
       title,
       price,
       description,
-      selectedFile: selectedFile.selectedFile,
+      selectedFile: selectedFile,
     }).save()
     res.status(201).json(product)
   } catch (err) {

@@ -2,7 +2,7 @@ import Link from "next/link"
 import { useState } from "react"
 import baseURL from "../helpers/baseUrl"
 import FileBase from "react-file-base64"
-
+import { parseCookies } from "nookies"
 const Create = () => {
   const [title, setTitle] = useState("")
   const [price, setPrice] = useState("")
@@ -59,7 +59,7 @@ const Create = () => {
         <FileBase
           type="file"
           multiple={false}
-          onDone={({ base64 }) => setSelectedFile({ selectedFile: base64 })}
+          onDone={({ base64 }) => setSelectedFile(base64)}
         />
 
         <div className="file-path-wrapper">
@@ -84,6 +84,20 @@ const Create = () => {
       </button>
     </form>
   )
+}
+
+export async function getServerSideProps(ctx) {
+  const cookie = parseCookies(ctx)
+  const user = cookie.user ? JSON.parse(cookie.user) : ""
+  if (user.role == "user" || user.role == "") {
+    const { res } = ctx
+    res.writeHead(302, { Location: "/" })
+    res.end()
+  }
+
+  return {
+    props: {},
+  }
 }
 
 export default Create
